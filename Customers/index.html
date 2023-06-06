@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project 2 Brenndon G</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width-device-width, initial-scale 1" />
+
+    <style>
+
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+         }
+
+         body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+         }
+
+         .container {
+            max-width: 700px;
+            width: 100%;
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 5px;
+         }
+
+          .container .title {
+            font-size: 25px;
+            font-weight: 500;
+            position: relative;
+           }
+
+         .container .title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+          }
+
+         .container form .customerDetails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px 0 12px 0;
+          }
+
+         form .customerDetails .input-box {
+            margin-bottom: 15px;
+            width: calc(100% / 2 - 20px);
+         }
+
+        .customerDetails .input-box .details {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .customerDetails .input-box input {
+            height: 45px;
+            width: 100%;
+        }
+
+        .customerDetails .input-box input {
+            height: 45px;
+            width: 100%;
+            outline: none;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding-left: 15px;
+            font-size: 16px;
+            border-bottom-width: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .customerDetails .input-box input:focus {
+           border-color: #9b59b6;
+        }
+
+        form .buttons {
+            height: 25px;
+            margin: 25px 0;
+        }
+
+        form .buttons input {
+            height: 100%;
+            width: 18%;
+            outline: none;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            letter-spacing: 1px;
+            margin-right: 9px;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+         }
+
+         form .buttons input:hover {
+            background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+         }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        // ***************************************************
+        // post Request event handler uses jQuery .post method
+        // to issue request and process response (callback)
+
+        // FIND CUSTOMER ID INFORMATION (BUTTON);
+        function findRequest() {
+
+            $.post("/data", {
+                cusID: document.getElementById("txtCusID").value
+            },
+                function (data, status) {
+                    document.getElementById("txtCusID").value = data.cusID;
+                    document.getElementById("txtFirst").value = data.first;
+                    document.getElementById("txtLast").value = data.last;
+                    document.getElementById("txtAddress").value = data.address;
+                    document.getElementById("txtCity").value = data.city;
+                    document.getElementById("txtProvince").value = data.province;
+                    document.getElementById("txtPostal").value = data.postal;
+                });
+        }
+
+
+        // Clear Form Fields (NEW BUTTON)
+        function newRequest() {
+            document.getElementById("txtCusID").value = "";
+            document.getElementById("txtFirst").value = "";
+            document.getElementById("txtLast").value = "";
+            document.getElementById("txtAddress").value = "";
+            document.getElementById("txtCity").value = "";
+            document.getElementById("txtProvince").value = "";
+            document.getElementById("txtPostal").value = "";
+        }
+        // Add To Text File (ADD Button)
+        function addRequest() {
+
+            let cus = document.getElementById("txtCusID").value;
+            let f = document.getElementById("txtFirst").value;
+            let l = document.getElementById("txtLast").value;
+            let ad = document.getElementById("txtAddress").value;
+            let cit = document.getElementById("txtCity").value;
+            let prov = document.getElementById("txtProvince").value;
+            let postal = document.getElementById("txtPostal").value;
+
+            if (cus != "" && f != "" && l != "" && ad != "" && cit != "" && prov != "" && postal != "") {
+
+                $.post("/add", {
+
+                    cusID: document.getElementById("txtCusID").value,
+                    first: document.getElementById("txtFirst").value,
+                    last: document.getElementById("txtLast").value,
+                    address: document.getElementById("txtAddress").value,
+                    city: document.getElementById("txtCity").value,
+                    province: document.getElementById("txtProvince").value,
+                    postal: document.getElementById("txtPostal").value,
+                },
+                    function (add, status) {
+                        document.getElementById("txtCusID").value = add.cusID;
+                        document.getElementById("txtFirst").value = add.first;
+                        document.getElementById("txtLast").value = add.last;
+                        document.getElementById("txtAddress").value = add.address;
+                        document.getElementById("txtCity").value = add.city;
+                        document.getElementById("txtProvince").value = add.province;
+                        document.getElementById("txtPostal").value = add.postal;
+                    });
+            }
+        };
+        // Delete Button
+        function deleteRequest() {
+
+            let result = confirm("Are you sure you would like to delete your Information?\n Press OK to delete or Cancel to end this request!");
+
+            if (result) {
+
+                $.post("/deleteFile", {
+                    cusID: document.getElementById("txtCusID").value,
+                },
+                    function (deleteFile, status) {
+                        document.getElementById("txtCusID").value = deleteFile.cusID;
+
+                        document.getElementById("txtCusID").value = "";
+                        document.getElementById("txtFirst").value = "";
+                        document.getElementById("txtLast").value = "";
+                        document.getElementById("txtAddress").value = "";
+                        document.getElementById("txtCity").value = "";
+                        document.getElementById("txtProvince").value = "";
+                        document.getElementById("txtPostal").value = "";
+                    });
+            } else {
+                document.getElementById("txtCusID").value = "";
+                document.getElementById("txtFirst").value = "";
+                document.getElementById("txtLast").value = "";
+                document.getElementById("txtAddress").value = "";
+                document.getElementById("txtCity").value = "";
+                document.getElementById("txtProvince").value = "";
+                document.getElementById("txtPostal").value = "";
+            } // end of if statement
+        }// end of function
+
+
+        //UPDATE BUTTON
+        function updateRequest() {
+
+            let cus = document.getElementById("txtCusID").value;
+            let f = document.getElementById("txtFirst").value;
+            let l = document.getElementById("txtLast").value;
+            let ad = document.getElementById("txtAddress").value;
+            let cit = document.getElementById("txtCity").value;
+            let prov = document.getElementById("txtProvince").value;
+            let postal = document.getElementById("txtPostal").value;
+
+            if (cus != "" && f != "" && l != "" && ad != "" && cit != "" && prov != "" && postal != "") {
+
+                $.post("/update", {
+
+                    cusID: document.getElementById("txtCusID").value,
+                    first: document.getElementById("txtFirst").value,
+                    last: document.getElementById("txtLast").value,
+                    address: document.getElementById("txtAddress").value,
+                    city: document.getElementById("txtCity").value,
+                    province: document.getElementById("txtProvince").value,
+                    postal: document.getElementById("txtPostal").value,
+                },
+                    function (update, status) {
+                        document.getElementById("txtCusID").value = update.cusID;
+                        document.getElementById("txtFirst").value = update.first;
+                        document.getElementById("txtLast").value = update.last;
+                        document.getElementById("txtAddress").value = update.address;
+                        document.getElementById("txtCity").value = update.city;
+                        document.getElementById("txtProvince").value = update.province;
+                        document.getElementById("txtPostal").value = update.postal;
+                    });
+            }
+
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="title">Customer Form</div>
+        <form id="form" method="POST" action="/">
+            <div class="customerDetails">
+                <div class="input-box">
+                    <span class="details">Customer Number:</span>
+                    <input type="text" name="txtCusID" id="txtCusID" placeholder="Enter Your Customer Id" required/>
+                </div>
+                <div class="input-box">
+                    <span class="details">First Name::</span>
+                    <input type="text" name="txtFirst" id="txtFirst" placeholder="Enter First Name" />
+                </div>
+                <div class="input-box">
+                    <span class="details">Last Name:</span>
+                    <input type="text" name="txtLast" id="txtLast" placeholder="Enter Last Name" />
+                </div>
+                <div class="input-box">
+                    <span class="details">Address:</span>
+                    <input type="text" name="txtAddress" id="txtAddress" placeholder="Enter Address" />
+                </div>
+                <div class="input-box">
+                    <span class="details">City:</span>
+                    <input type="text" name="txtCity" id="txtCity" placeholder="Enter City" />
+                </div>
+                <div class="input-box">
+                    <span class="details">Province:</span>
+                    <input type="text" name="txtProvince" id="txtProvince" placeholder="Enter Province" />
+                </div>
+                <div class="input-box">
+                    <span class="details">Postal:</span>
+                    <input type="text" name="txtPostal" id="txtPostal" placeholder="Enter Postal/Zip Code" />
+                </div>
+            </div>
+            <div class="buttons">
+                <input id="newPost" type="button" onclick="newRequest();" value="New" />
+                <input id="addPost" type="button" onclick="addRequest();" value="Add" />
+                <input id="updatePost" type="button" onclick="updateRequest();" value="Update" />
+                <input id="deletePost" type="button" onclick="deleteRequest();" value="Delete" />
+                <input id="findPost" type="button" onclick="findRequest();" value="Find" />
+
+            </div>
+
+        </form>
+</div>
+
+</body>
+</html>

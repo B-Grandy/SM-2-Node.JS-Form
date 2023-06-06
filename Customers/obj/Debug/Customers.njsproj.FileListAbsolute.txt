@@ -1,0 +1,6 @@
+D:\node_code\Customers\Customers\obj\Debug\Customers.njsproj.AssemblyReference.cache
+D:\node_code\Customers\Customers\obj\Debug\Customers.njsproj.CoreCompileInputs.cache
+D:\node_code\Customers\Customers\bin\Microsoft.NodejsTools.WebRole.dll
+E:\2_Web_Development\Web Development Semester 2\node_code\Customers\Customers\obj\Debug\Customers.njsproj.AssemblyReference.cache
+E:\2_Web_Development\Web Development Semester 2\node_code\Customers\Customers\obj\Debug\Customers.njsproj.CoreCompileInputs.cache
+E:\2_Web_Development\Web Development Semester 2\node_code\Customers\Customers\bin\Microsoft.NodejsTools.WebRole.dll
